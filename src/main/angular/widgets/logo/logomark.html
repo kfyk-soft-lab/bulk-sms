@@ -1,0 +1,19 @@
+<svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Texter logo">
+    @if (variant() == "color") {
+        <defs>
+            <linearGradient [id]="id" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3B1FA8" />
+                <stop offset="55%" stop-color="#5B2BD6" />
+                <stop offset="100%" stop-color="#7C3AED" />
+            </linearGradient>
+        </defs>
+    }
+    <path d="M30 10h60c11 0 20 9 20 20v48c0 11-9 20-20 20H46L22 112c-2 1.6-4.8 0.2-4.8-2.3V96C13 93 10 86 10 78V30c0-11 9-20 20-20Z" [attr.fill]="fill"/>
+    <rect x="32" y="34" width="56" height="9" rx="3" [attr.fill]="fg" />
+    <rect x="40" y="47" width="40" height="5" rx="2.5" [attr.fill]="fg" opacity="0.75" />
+    <rect x="47" y="56" width="26" height="4" rx="2" [attr.fill]="fg" opacity="0.5" />
+    <rect x="54" y="43" width="12" height="40" rx="3" [attr.fill]="fg" />
+    <circle cx="96" cy="24" r="17" [attr.fill]="variant() === 'color' ? '#ffffff' : 'currentColor'" />
+    <circle cx="96" cy="24" r="12.5" [attr.fill]="variant() === 'color' ? '#4C25C2' : '#ffffff'" />
+    <path d="M96 16v8.5l5.5 3.5" [attr.stroke]="variant() === 'color' ? '#ffffff' : 'currentColor'" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+</svg>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TexterSMS BD - Modern Bulk SMS Gateway & Portal for Bangladesh</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#0B0F19',
+                        },
+                        indigo: {
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                        },
+                        emerald: {
+                            400: '#34D399',
+                            500: '#10B981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: #F8FAFC;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card-hover {
+            transition: all 0.3s ease;
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.15);
+        }
+
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        .glass-input:focus {
+            border-color: #6366F1;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Pulsing Glow Animation */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .pulse-bg {
+            animation: pulseGlow 6s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <app-root></app-root>
+    <!-- Background Gradient Glows -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-[128px] pointer-events-none pulse-bg"></div>
+    <div class="fixed top-1/3 right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-[128px] pointer-events-none pulse-bg"></div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 bg-navy-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid font-bold fa-paper-plane text-white text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">Texter<span class="text-indigo-400">SMS</span></span>
+                    <span class="text-[10px] block font-semibold text-emerald-400 uppercase tracking-widest -mt-1">BD Gateway</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#features" class="hover:text-indigo-400 transition-colors">Features</a>
+                <a href="#simulator" class="hover:text-indigo-400 transition-colors">Live Demo</a>
+                <a href="#pricing" class="hover:text-indigo-400 transition-colors">Pricing (BDT)</a>
+                <a href="#developer" class="hover:text-indigo-400 transition-colors">API & Docs</a>
+                <a href="#portal" class="hover:text-indigo-400 transition-colors">Dashboard Preview</a>
+            </nav>
+
+            <!-- CTA Buttons -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLoginModal(true)" class="hidden sm:inline-flex text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 rounded-xl transition-colors">
+                    Log In
+                </button>
+                <a href="#simulator" class="bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all flex items-center gap-2">
+                    <span>Try Free Trial</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative pt-12 pb-20 md:pt-20 md:pb-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Column -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    
+                    <!-- BTRC Compliance Badge -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border border-indigo-500/30 text-xs font-medium text-indigo-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>BTRC Approved & Operator Compliant Gateway</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                        Send Millions of SMS Across <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-emerald-400 bg-clip-text text-transparent">Bangladesh</span> in Seconds
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        High-throughput Masking, Non-Masking & Instant OTP delivery with 99.9% uptime. Direct connections to Grameenphone, Robi, Banglalink & Teletalk.
+                    </p>
+
+                    <!-- Bullet Points -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm font-medium text-slate-300">
+                        <div class="flex items-center gap-2 justify-center lg:justify-start">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            <span>2-5 Sec OTP Delivery</span>
+                        </div>
+                        <div class="flex items-center gap-2 justify-center lg:justify-start">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            <span>Instant bKash Top-up</span>
+                        </div>
+                        <div class="flex items-center gap-2 justify-center lg:justify-start">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            <span>API & Web Portal</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Group -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#pricing" class="w-full sm:w-auto text-center px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-xl shadow-indigo-600/25 transition-all">
+                            Get Started (10 Free Credits)
+                        </a>
+                        <a href="#simulator" class="w-full sm:w-auto text-center px-6 py-3.5 rounded-xl glass-card hover:bg-slate-800/80 text-slate-200 font-semibold border border-slate-700 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play text-xs text-indigo-400"></i>
+                            <span>Live Simulator</span>
+                        </a>
+                    </div>
+
+                    <!-- Operator Badges -->
+                    <div class="pt-6 border-t border-slate-800/80">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Direct Mobile Operator Connections</p>
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-slate-400 font-bold text-sm">
+                            <span class="hover:text-slate-200 transition-colors"><i class="fa-solid fa-signal text-emerald-400 mr-1"></i> Grameenphone</span>
+                            <span class="hover:text-slate-200 transition-colors"><i class="fa-solid fa-signal text-red-400 mr-1"></i> Robi</span>
+                            <span class="hover:text-slate-200 transition-colors"><i class="fa-solid fa-signal text-orange-400 mr-1"></i> Banglalink</span>
+                            <span class="hover:text-slate-200 transition-colors"><i class="fa-solid fa-signal text-blue-400 mr-1"></i> Teletalk</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Hero Right Column: Interactive SMS Sender Widget -->
+                <div class="lg:col-span-5" id="simulator">
+                    <div class="glass-card rounded-2xl p-6 shadow-2xl relative border border-slate-700/60 bg-slate-900/90">
+                        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                                <span class="text-xs font-bold text-slate-300 ml-2">SMS Gateway Live Test</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">System Online</span>
+                        </div>
+
+                        <!-- Interactive Form -->
+                        <div class="space-y-4">
+                            <!-- Sender ID Option -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Sender Type (Masking / Non-Masking)</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button type="button" id="btn-masking" onclick="setSenderType('masking')" class="py-2 px-3 rounded-lg text-xs font-medium border border-indigo-500 bg-indigo-600/20 text-indigo-300 flex items-center justify-center gap-1.5 transition-all">
+                                        <i class="fa-solid fa-shield-halved"></i> Masking (Brand Name)
+                                    </button>
+                                    <button type="button" id="btn-nonmasking" onclick="setSenderType('nonmasking')" class="py-2 px-3 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800/50 text-slate-400 flex items-center justify-center gap-1.5 transition-all">
+                                        <i class="fa-solid fa-mobile-screen"></i> Non-Masking
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Mobile Number Input -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Recipient Number (Bangladesh)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-xs font-mono text-slate-400">+880</span>
+                                    <input type="text" id="phone-number" value="1712345678" maxlength="10" class="w-full glass-input rounded-lg pl-14 pr-3 py-2 text-xs font-mono tracking-wide" placeholder="1700000000">
+                                </div>
+                            </div>
+
+                            <!-- SMS Message Body -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="block text-xs font-semibold text-slate-300">Message Content</label>
+                                    <span id="encoding-badge" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">GSM-7 (English)</span>
+                                </div>
+                                <textarea id="sms-text" rows="3" oninput="updateSMSStats()" class="w-full glass-input rounded-lg p-3 text-xs resize-none" placeholder="Write your message here...">Welcome to TexterSMS! Your OTP for account verification is 849201. Valid for 5 minutes.</textarea>
+                            </div>
+
+                            <!-- Live Character & Count Stats -->
+                            <div class="flex items-center justify-between text-xs font-mono text-slate-400 bg-slate-950/50 p-2.5 rounded-lg border border-slate-800">
+                                <div>
+                                    Characters: <span id="char-count" class="text-white font-bold">92</span>
+                                </div>
+                                <div>
+                                    Parts: <span id="parts-count" class="text-indigo-400 font-bold">1 SMS</span>
+                                </div>
+                                <div>
+                                    Est. Cost: <span id="est-cost" class="text-emerald-400 font-bold">৳0.35</span>
+                                </div>
+                            </div>
+
+                            <!-- Send Button -->
+                            <button type="button" id="send-demo-btn" onclick="simulateSendSMS()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold text-xs shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Send Test SMS Now</span>
+                            </button>
+                        </div>
+
+                        <!-- Phone Display Animation Simulation Overlay -->
+                        <div id="demo-response" class="hidden mt-4 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-200 transition-all flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-base mt-0.5"></i>
+                            <div>
+                                <p class="font-bold text-emerald-300">SMS Delivered Successfully!</p>
+                                <p class="text-[11px] text-emerald-200/80 mt-0.5">DLR ID: <span class="font-mono" id="dlr-id">TX-883910</span> | Time: <span id="dlr-time">Just now</span></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="py-20 bg-slate-950/50 border-y border-slate-800/80 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-2">Why Choose TexterSMS</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">Built for High Volume, Speed & Reliability</p>
+                <p class="text-slate-400 mt-3 text-sm">Everything you need to reach customers in Bangladesh seamlessly with complete transparency.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-2xl p-6 glass-card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-5 text-xl">
+                        <i class="fa-solid fa-bolt-lightning"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">High Speed & Instant DLR</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Throughput capacity of 500+ SMS per second. Receive real-time Delivery Reports (DLR) directly on your panel or via Webhook callback.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-2xl p-6 glass-card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-5 text-xl">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Sender ID / Brand Name</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Send SMS with your brand name (Masking SMS) approved by BTRC. Build credibility and enhance customer response rates instantly.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-2xl p-6 glass-card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-5 text-xl">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Developer Friendly APIs</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        RESTful HTTP API with ready-made SDKs for PHP, Node.js, Python, Laravel, and Python. Simple integration in less than 10 minutes.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card rounded-2xl p-6 glass-card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-5 text-xl">
+                        <i class="fa-solid fa-file-excel"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Excel / CSV Group Campaign</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Upload custom contact lists in Excel or CSV formats with dynamic tags (e.g. Hello {Name}, your balance is {Amount}).
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card rounded-2xl p-6 glass-card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-5 text-xl">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Bangla Unicode Support</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Automatic character encoding detection for English (GSM) and Bangla (Unicode) texts. Write in Bangla without breaking character limits.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card rounded-2xl p-6 glass-card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-rose-600/20 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-5 text-xl">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Instant Wallet Recharge</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Automated balance recharge using bKash, Nagad, Rocket, and Bank Cards. Balance added to your account instantly 24/7.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING & CALCULATOR SECTION -->
+    <section id="pricing" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-2">Transparent Pricing</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">Simple Pricing in Bangladeshi Taka (BDT)</p>
+                <p class="text-slate-400 mt-3 text-sm">No hidden setup fees. Pay only for what you send.</p>
+            </div>
+
+            <!-- Pricing Calculator Card -->
+            <div class="max-w-4xl mx-auto glass-card rounded-3xl p-6 sm:p-10 border border-slate-700 shadow-2xl">
+                
+                <!-- SMS Type Tabs -->
+                <div class="flex flex-wrap justify-center gap-2 mb-8 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                    <button id="type-nonmasking" onclick="setPricingType('nonmasking')" class="flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-semibold transition-all bg-indigo-600 text-white shadow">
+                        Non-Masking SMS
+                    </button>
+                    <button id="type-masking" onclick="setPricingType('masking')" class="flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">
+                        Masking SMS (Brand ID)
+                    </button>
+                    <button id="type-otp" onclick="setPricingType('otp')" class="flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">
+                        OTP & Transactional
+                    </button>
+                </div>
+
+                <!-- Calculator Body -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Left: Slider & Input Controls -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-semibold text-slate-200">How many SMS do you need?</label>
+                                <span class="text-xs font-mono bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-md border border-indigo-500/30 font-bold" id="quantity-display">25,000 SMS</span>
+                            </div>
+                            <!-- Range Slider -->
+                            <input type="range" id="sms-slider" min="1000" max="250000" step="1000" value="25000" oninput="calculatePrice()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                            <div class="flex justify-between text-[11px] font-mono text-slate-500 mt-2">
+                                <span>1,000</span>
+                                <span>50,000</span>
+                                <span>100,000</span>
+                                <span>250,000+</span>
+                            </div>
+                        </div>
+
+                        <!-- Highlights list -->
+                        <div class="space-y-2 text-xs text-slate-300 pt-2 border-t border-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-400"></i>
+                                <span>Validity: <strong class="text-white">Lifetime (No Expiry)</strong></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-400"></i>
+                                <span>Operator Tax & SD included</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-check text-emerald-400"></i>
+                                <span>Real-time DLR Analytics Dashboard</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Price Output Display Card -->
+                    <div class="lg:col-span-5">
+                        <div class="bg-gradient-to-b from-slate-900 to-navy-950 p-6 rounded-2xl border border-indigo-500/30 text-center relative overflow-hidden shadow-xl">
+                            <div class="absolute -right-8 -top-8 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl"></div>
+                            
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Estimated Investment</span>
+                            
+                            <div class="my-3">
+                                <span class="text-4xl sm:text-5xl font-black text-white" id="total-price-bdt">৳7,500</span>
+                                <span class="text-xs text-slate-400 block mt-1">Rate: <span id="per-sms-rate" class="text-emerald-400 font-bold">৳0.30</span> / SMS</span>
+                            </div>
+
+                            <a href="#" class="w-full mt-4 block py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-semibold text-xs transition-all shadow-lg shadow-indigo-600/30">
+                                Buy Bulk Package Now
+                            </a>
+
+                            <div class="mt-4 pt-3 border-t border-slate-800/80">
+                                <p class="text-[10px] text-slate-400 mb-2 font-medium">Instant Payment Options</p>
+                                <div class="flex items-center justify-center gap-3 text-slate-400 text-xs font-bold">
+                                    <span class="px-2 py-1 rounded bg-slate-800 text-pink-400 border border-slate-700">bKash</span>
+                                    <span class="px-2 py-1 rounded bg-slate-800 text-orange-400 border border-slate-700">Nagad</span>
+                                    <span class="px-2 py-1 rounded bg-slate-800 text-purple-400 border border-slate-700">Rocket</span>
+                                    <span class="px-2 py-1 rounded bg-slate-800 text-blue-400 border border-slate-700">Cards</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DEVELOPER API SECTION -->
+    <section id="developer" class="py-20 bg-slate-950/60 border-t border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold text-purple-300">
+                        <i class="fa-solid fa-terminal"></i> Developer API
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Integrate SMS API in Under 10 Minutes</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Use our ultra-fast HTTP REST API to send automated OTPs, transactional notifications, order updates, and marketing messages from your web applications or mobile apps.
+                    </p>
+                    <ul class="space-y-2.5 text-xs text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> JSON formatted response with unique DLR ID</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Balance inquiry and status webhooks</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> SSL secured endpoints with 99.99% API uptime</li>
+                    </ul>
+                </div>
+
+                <!-- Interactive Tabbed Code Viewer -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
+                        
+                        <!-- Code Language Tabs -->
+                        <div class="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800">
+                            <div class="flex gap-2">
+                                <button onclick="switchCodeTab('curl')" id="tab-curl" class="px-3 py-1 rounded-lg text-xs font-mono bg-indigo-600 text-white">cURL</button>
+                                <button onclick="switchCodeTab('node')" id="tab-node" class="px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Node.js</button>
+                                <button onclick="switchCodeTab('php')" id="tab-php" class="px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">PHP</button>
+                                <button onclick="switchCodeTab('python')" id="tab-python" class="px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white">Python</button>
+                            </div>
+                            <button onclick="copyCodeSnippet()" class="text-xs text-slate-400 hover:text-indigo-400 flex items-center gap-1">
+                                <i class="fa-regular fa-copy"></i>
+                                <span id="copy-btn-text">Copy Code</span>
+                            </button>
+                        </div>
+
+                        <!-- Code Block View -->
+                        <div class="p-5 font-mono text-xs overflow-x-auto leading-relaxed text-indigo-200">
+                            <pre id="code-block" class="whitespace-pre">
+curl -X POST https://api.textersms.com/v1/send \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sender_id": "YourBrand",
+    "recipient": "8801712345678",
+    "type": "plain",
+    "message": "Your OTP code is 9841. Valid for 5 minutes."
+  }'</pre>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAL DASHBOARD PREVIEW SECTION -->
+    <section id="portal" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-2">Customer Control Panel</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">Intuitive Dashboard for Managing Campaigns</p>
+                <p class="text-slate-400 mt-3 text-sm">Monitor live campaigns, recharge wallet instantly, and download analytical reports.</p>
+            </div>
+
+            <!-- Portal Interface Mockup -->
+            <div class="glass-card rounded-2xl p-4 sm:p-6 border border-slate-700/80 shadow-2xl bg-slate-900/90">
+                <!-- Mock Header Bar -->
+                <div class="flex flex-wrap items-center justify-between pb-4 border-b border-slate-800 gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-xs text-white">
+                            TX
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-white block">Client Portal Preview</span>
+                            <span class="text-[10px] text-slate-400">Account: Enterprise Plan</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <span class="text-[10px] text-slate-400 block">Available SMS Balance</span>
+                            <span class="text-sm font-bold text-emerald-400">142,500 SMS (৳42,750)</span>
+                        </div>
+                        <button class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-500 transition-colors">
+                            + Add Balance
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mock Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Total Sent Today</span>
+                        <span class="text-xl font-extrabold text-white">18,450</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Delivered Rate</span>
+                        <span class="text-xl font-extrabold text-emerald-400">99.4%</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Failed / DND</span>
+                        <span class="text-xl font-extrabold text-red-400">0.6%</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Active Masking IDs</span>
+                        <span class="text-xl font-extrabold text-indigo-400">2 Sender IDs</span>
+                    </div>
+                </div>
+
+                <!-- Mock Live Campaign Table -->
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 overflow-x-auto">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-slate-200">Recent Campaigns</span>
+                        <span class="text-[11px] text-indigo-400 cursor-pointer hover:underline">View All Logs &rarr;</span>
+                    </div>
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="text-slate-500 border-b border-slate-800">
+                                <th class="pb-2 font-medium">Campaign Title</th>
+                                <th class="pb-2 font-medium">Sender ID</th>
+                                <th class="pb-2 font-medium">Recipients</th>
+                                <th class="pb-2 font-medium">Status</th>
+                                <th class="pb-2 font-medium text-right">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                            <tr>
+                                <td class="py-2.5 font-semibold">Eid Discount Offer #2</td>
+                                <td class="py-2.5 font-mono text-indigo-300">TexterSMS</td>
+                                <td class="py-2.5">12,000</td>
+                                <td class="py-2.5"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">Completed</span></td>
+                                <td class="py-2.5 text-right text-slate-400">10 mins ago</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 font-semibold">OTP Verification Batch</td>
+                                <td class="py-2.5 font-mono text-indigo-300">TexterOTP</td>
+                                <td class="py-2.5">1,420</td>
+                                <td class="py-2.5"><span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold">Live Sending</span></td>
+                                <td class="py-2.5 text-right text-slate-400">Just now</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 border-t border-slate-800 text-slate-400 text-xs py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center text-white text-xs font-bold">
+                            TX
+                        </div>
+                        <span class="text-base font-extrabold text-white">TexterSMS BD</span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Leading BTRC compliant Bulk SMS Gateway and API provider in Bangladesh.
+                    </p>
+                    <p class="text-slate-500 text-[11px]">
+                        &copy; 2026 TexterSMS BD Inc. All rights reserved.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="hover:text-indigo-400 transition-colors">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-indigo-400 transition-colors">Pricing Packages</a></li>
+                        <li><a href="#developer" class="hover:text-indigo-400 transition-colors">API Documentation</a></li>
+                        <li><a href="#simulator" class="hover:text-indigo-400 transition-colors">Live Demo</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3">Legal & Compliance</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">BTRC SMS Policy Guidelines</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Masking Approval Process</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3">Support & Contact</h4>
+                    <p class="mb-2"><i class="fa-solid fa-phone text-indigo-400 mr-2"></i> +880 1700-000000</p>
+                    <p class="mb-2"><i class="fa-solid fa-envelope text-indigo-400 mr-2"></i> support@textersms.com.bd</p>
+                    <p class="mb-4"><i class="fa-solid fa-location-dot text-indigo-400 mr-2"></i> Gulshan-2, Dhaka-1212, Bangladesh</p>
+                    <div class="flex items-center gap-3 text-sm text-slate-300">
+                        <a href="#" class="hover:text-indigo-400"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-indigo-400"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-indigo-400"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL DIALOG -->
+    <div id="login-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 border border-slate-700 bg-navy-900 shadow-2xl relative">
+            <button onclick="toggleLoginModal(false)" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <h3 class="text-xl font-bold text-white">Log In to Customer Portal</h3>
+                <p class="text-xs text-slate-400 mt-1">Enter your account details to access dashboard</p>
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('Login submission simulated!'); toggleLoginModal(false);" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email or Mobile Number</label>
+                    <input type="text" required class="w-full glass-input rounded-xl p-2.5 text-xs" placeholder="01700000000 or email@domain.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                    <input type="password" required class="w-full glass-input rounded-xl p-2.5 text-xs" placeholder="••••••••">
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" class="rounded bg-slate-800 border-slate-700 accent-indigo-600">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="text-indigo-400 hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-all shadow-lg shadow-indigo-600/30">
+                    Log In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // State variables
+        let currentSenderType = 'masking';
+        let currentPricingType = 'nonmasking';
+
+        // Rates in BDT per SMS based on volume
+        const rates = {
+            nonmasking: [
+                { limit: 5000, rate: 0.35 },
+                { limit: 25000, rate: 0.30 },
+                { limit: 100000, rate: 0.28 },
+                { limit: Infinity, rate: 0.25 }
+            ],
+            masking: [
+                { limit: 5000, rate: 0.50 },
+                { limit: 25000, rate: 0.45 },
+                { limit: 100000, rate: 0.40 },
+                { limit: Infinity, rate: 0.38 }
+            ],
+            otp: [
+                { limit: 5000, rate: 0.40 },
+                { limit: 25000, rate: 0.35 },
+                { limit: 100000, rate: 0.32 },
+                { limit: Infinity, rate: 0.30 }
+            ]
+        };
+
+        // 1. Live SMS Character & Parts Counter Simulator
+        function updateSMSStats() {
+            const text = document.getElementById('sms-text').value;
+            const charCountEl = document.getElementById('char-count');
+            const partsCountEl = document.getElementById('parts-count');
+            const estCostEl = document.getElementById('est-cost');
+            const encodingBadge = document.getElementById('encoding-badge');
+
+            // Detect Unicode (Bangla, Arabic, Emoji etc.)
+            const isUnicode = /[^\u0000-\u007F]/.test(text);
+            
+            if (isUnicode) {
+                encodingBadge.innerText = 'Unicode (Bangla)';
+                encodingBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30';
+            } else {
+                encodingBadge.innerText = 'GSM-7 (English)';
+                encodingBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+            }
+
+            const charCount = text.length;
+            charCountEl.innerText = charCount;
+
+            // Calculate Parts
+            let parts = 1;
+            if (isUnicode) {
+                if (charCount > 70) {
+                    parts = Math.ceil(charCount / 67);
+                }
+            } else {
+                if (charCount > 160) {
+                    parts = Math.ceil(charCount / 153);
+                }
+            }
+
+            partsCountEl.innerText = `${parts} SMS`;
+
+            // Calculate Single SMS cost
+            const perSmsRate = currentSenderType === 'masking' ? 0.45 : 0.30;
+            const totalEst = (parts * perSmsRate).toFixed(2);
+            estCostEl.innerText = `৳${totalEst}`;
+        }
+
+        function setSenderType(type) {
+            currentSenderType = type;
+            const maskingBtn = document.getElementById('btn-masking');
+            const nonmaskingBtn = document.getElementById('btn-nonmasking');
+
+            if (type === 'masking') {
+                maskingBtn.className = 'py-2 px-3 rounded-lg text-xs font-medium border border-indigo-500 bg-indigo-600/20 text-indigo-300 flex items-center justify-center gap-1.5 transition-all';
+                nonmaskingBtn.className = 'py-2 px-3 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800/50 text-slate-400 flex items-center justify-center gap-1.5 transition-all';
+            } else {
+                nonmaskingBtn.className = 'py-2 px-3 rounded-lg text-xs font-medium border border-indigo-500 bg-indigo-600/20 text-indigo-300 flex items-center justify-center gap-1.5 transition-all';
+                maskingBtn.className = 'py-2 px-3 rounded-lg text-xs font-medium border border-slate-700 bg-slate-800/50 text-slate-400 flex items-center justify-center gap-1.5 transition-all';
+            }
+            updateSMSStats();
+        }
+
+        // 2. Simulate Sending SMS Animation
+        function simulateSendSMS() {
+            const btn = document.getElementById('send-demo-btn');
+            const responseDiv = document.getElementById('demo-response');
+            const phoneVal = document.getElementById('phone-number').value;
+
+            if (!phoneVal || phoneVal.length < 10) {
+                alert('Please enter a valid 10-digit Bangladeshi mobile number.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing & Dispatching...`;
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send Test SMS Now`;
+                
+                // Set DLR values
+                document.getElementById('dlr-id').innerText = `TX-${Math.floor(100000 + Math.random() * 900000)}`;
+                document.getElementById('dlr-time').innerText = new Date().toLocaleTimeString();
+                
+                responseDiv.classList.remove('hidden');
+            }, 1200);
+        }
+
+        // 3. Dynamic Pricing Calculator
+        function setPricingType(type) {
+            currentPricingType = type;
+            const types = ['nonmasking', 'masking', 'otp'];
+            types.forEach(t => {
+                const btn = document.getElementById(`type-${t}`);
+                if (t === type) {
+                    btn.className = 'flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-semibold transition-all bg-indigo-600 text-white shadow';
+                } else {
+                    btn.className = 'flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all';
+                }
+            });
+            calculatePrice();
+        }
+
+        function calculatePrice() {
+            const quantity = parseInt(document.getElementById('sms-slider').value);
+            document.getElementById('quantity-display').innerText = `${quantity.toLocaleString()} SMS`;
+
+            // Find applicable rate tier
+            const tierList = rates[currentPricingType];
+            let applicableRate = 0.35;
+            for (let i = 0; i < tierList.length; i++) {
+                if (quantity <= tierList[i].limit) {
+                    applicableRate = tierList[i].rate;
+                    break;
+                }
+            }
+
+            const totalPrice = Math.round(quantity * applicableRate);
+            document.getElementById('per-sms-rate').innerText = `৳${applicableRate.toFixed(2)}`;
+            document.getElementById('total-price-bdt').innerText = `৳${totalPrice.toLocaleString()}`;
+        }
+
+        // 4. Developer Code Snippet Switcher
+        const codeSnippets = {
+            curl: `curl -X POST https://api.textersms.com/v1/send \\
+  -H "Authorization: Bearer YOUR_API_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "sender_id": "YourBrand",
+    "recipient": "8801712345678",
+    "type": "plain",
+    "message": "Your OTP code is 9841. Valid for 5 minutes."
+  }'`,
+            node: `const axios = require('axios');
+
+axios.post('https://api.textersms.com/v1/send', {
+    sender_id: 'YourBrand',
+    recipient: '8801712345678',
+    message: 'Your OTP code is 9841.'
+}, {
+    headers: { 'Authorization': 'Bearer YOUR_API_TOKEN' }
+})
+.then(response => console.log(response.data))
+.catch(error => console.error(error));`,
+            php: `<?php
+$ch = curl_init("https://api.textersms.com/v1/send");
+$data = array(
+    "sender_id" => "YourBrand",
+    "recipient" => "8801712345678",
+    "message"   => "Your OTP code is 9841."
+);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer YOUR_API_TOKEN', 'Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+?>`,
+            python: `import requests
+
+url = "https://api.textersms.com/v1/send"
+headers = {"Authorization": "Bearer YOUR_API_TOKEN"}
+payload = {
+    "sender_id": "YourBrand",
+    "recipient": "8801712345678",
+    "message": "Your OTP code is 9841."
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())`
+        };
+
+        function switchCodeTab(lang) {
+            const tabs = ['curl', 'node', 'php', 'python'];
+            tabs.forEach(t => {
+                const tabBtn = document.getElementById(`tab-${t}`);
+                if (t === lang) {
+                    tabBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono bg-indigo-600 text-white';
+                } else {
+                    tabBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono text-slate-400 hover:text-white';
+                }
+            });
+            document.getElementById('code-block').innerText = codeSnippets[lang];
+        }
+
+        function copyCodeSnippet() {
+            const codeText = document.getElementById('code-block').innerText;
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = codeText;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const copyBtnText = document.getElementById('copy-btn-text');
+            copyBtnText.innerText = 'Copied!';
+            setTimeout(() => {
+                copyBtnText.innerText = 'Copy Code';
+            }, 2000);
+        }
+
+        // Login Modal Control
+        function toggleLoginModal(show) {
+            const modal = document.getElementById('login-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Initialize on Load
+        window.onload = function() {
+            updateSMSStats();
+            calculatePrice();
+        };
+    </script>
+</body>
+</html>

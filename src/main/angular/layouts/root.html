@@ -1,0 +1,28 @@
+<header class="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+        <a href="/" aria-label="Texter Home">
+            <applogo [size]="36" />
+        </a>
+        <nav class="flex items-center gap-6 text-sm font-medium text-slate-600">
+            <a href="/schedule" class="hover:text-indigo-700">
+                Schedule
+            </a>
+            <a href="/schedules" class="hover:text-indigo-700">
+                Orders
+            </a>
+            <a href="/smss" class="hover:text-indigo-700">
+                Orders
+            </a>
+            <a href="/brand" class="rounded-full bg-indigo-600 px-4 py-2 text-white shadow-sm transition hover:bg-indigo-700">
+                Brand & Logo
+            </a>
+        </nav>
+    </div>
+</header>
+<!--<router-outlet></router-outlet>-->
+<footer class="mt-20 border-t border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-slate-500 sm:flex-row">
+        <applogo [size]="28" />
+        <p>&copy; {{ currentYear }} Kfyklab. Texter — Bulk SMS</p>
+    </div>
+</footer>
